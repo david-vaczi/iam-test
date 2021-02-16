@@ -12,7 +12,7 @@
     groups: "{{ iam_supplementary_g }}"
     state: present
   tags:
-    - add_user
+    - iam_add_user
 
 - name: Userdel on Linux server
   user:

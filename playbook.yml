@@ -3,5 +3,5 @@
   tasks:
   - include_role:
       name: ansible-role-iam
-  tags:
-   - always
+    tags:
+      - always
