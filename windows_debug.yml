@@ -1,0 +1,42 @@
+---
+# This play ensures the connection to the windows servers. It calles the relevant role from roles/requirements.yml
+- name: Socks tunnel setup
+  hosts: all
+  gather_facts: no
+  roles:
+  - role: ansible-role-event-socks-tunnel
+    run_once: true
+    delegate_to: localhost
+    vars:
+      acc_id: "{{ account_triname }}"
+      transaction_id: "{{ tower_job_id }}"
+
+# Adding users to existing DL - this will become a separate role later on.
+- name: active-directory-iam
+  hosts: all
+  vars:
+    adi_user: "{{ adi_prompt_username }}"
+    adi_AD: "{{ adi_prompt_AD }}"
+  tasks:
+    - name: Check if "{{ adi_user }}" exists
+      win_shell: 'Get-ADUser -Identity {{ adi_user }}'
+      register: adi_user_output
+    - debug:
+        var: adi_user_output
+
+  # We need to capture:
+  # Name
+  # SamAccountName
+  # UserPrincipalName
+
+    - name: Check if "{{ adi_AD }}" exists
+      win_shell: 'Get-ADGroup -Identity {{ adi_AD }}'
+      register: adi_AD_output
+    - debug:
+        var: adi_AD_output
+
+    - name: Check if "{{ adi_AD }}" exists
+      win_shell: 'Add-ADGroupMember -Identity {{ adi_AD }} -Members {{ adi_user }}'
+      register: adi_user_to_AD_output
+    - debug:
+        var: adi_user_to_ad_output

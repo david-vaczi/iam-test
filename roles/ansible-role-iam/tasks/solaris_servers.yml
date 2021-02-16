@@ -1,0 +1,28 @@
+---
+# tasks file for ansible-role-iam
+# for Solaris servers 
+
+- name: Useradd on Linux server
+  shell: "/usr/sbin/useradd -c \"{{ iam_gecos }}\" -d /export/home/{{ iam_username }} -u {{ iam_uid }} -g {{ iam_primary_g }} -G {{ iam_supplementary_g }} -m -s /usr/bin/ksh {{ iam_username }}"
+  tags:
+    - add_user
+
+- name: Userdel on Linux server
+  shell: "/usr/sbin/userdel -r {{ iam_uid }}"
+  tags:
+    - remove_user
+
+- block:
+  - name: Unlock user account
+    shell: "passwd -u USERID {{ iam_uid }}"
+
+  - name: Reset 
+    shell: "echo '{{ iam_pwd }}' | passwd --stdin {{ iam_uid }}"
+
+  - name: Chage
+    shell: "passwd -x 90 -w 7 {{ iam_uid }}"
+
+  - name: Reset password on server
+    shell: "passwd -f {{ iam_uid }}"
+  tags:
+    - reset_user

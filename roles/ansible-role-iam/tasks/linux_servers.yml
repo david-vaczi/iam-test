@@ -1,0 +1,41 @@
+---
+# tasks file for ansible-role-iam
+# for Linux servers 
+
+- name: Useradd on Linux server
+  become: true
+  user:
+    name: "{{ iam_username }}"
+    comment: "{{ iam_gecos }}"
+    uid: "{{ iam_uid }}"
+    group: "{{ iam_primary_g }}"
+    groups: "{{ iam_supplementary_g }}"
+    state: present
+  tags:
+    - add_user
+
+- name: Userdel on Linux server
+  user:
+    name: "{{ iam_username }}"
+    remove: yes
+    state: absent
+  tags:
+    - remove_user
+
+- block:
+  - name: Unlock user account
+    shell: "passwd -u {{ iam_username }}"
+
+  - name: Reset faillog
+    shell: "faillog -r {{ iam_username }}"
+
+  - name: Reset password on Linux server
+    user:
+      name: "{{ iam_username }}"
+      password: "{{ iam_pwd | password_hash('sha512') }}"
+      state: present
+
+  - name: Password must be expired
+    shell: "chage -d 0 {{ iam_username }}"
+  tags:
+    - reset_user

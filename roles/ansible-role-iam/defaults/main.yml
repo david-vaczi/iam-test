@@ -1,0 +1,4 @@
+---
+# defaults file for ansible-role-iam
+#iam_default_pwd: PASSword123456
+iam_pwd: "{{ PASSword123456 }}"

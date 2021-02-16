@@ -1,0 +1,16 @@
+---
+# tasks file for ansible-role-iam
+- block:
+    - name: Linux functions
+      include_tasks: linux_servers.yml
+      when: ansible_os_family == 'RedHat' or ansible_os_family == 'Debian' or ansible_os_family == 'Suse'
+
+    - name: AIX functions
+      include_tasks: aix_servers.yml
+      when: ansible_os_family == 'AIX'
+
+    - name: Solaris functions
+      include_tasks: solaris_servers.yml
+      when: ansible_os_family == 'Solaris'
+  tags:
+    - always

@@ -1,0 +1,7 @@
+- name: Cluster debug for further progression
+  hosts: all
+  tasks:
+    - shell: 'lslpp -L | grep -i cluster.rte'
+      register: cluster_out
+    - debug:
+        var: cluster_out
