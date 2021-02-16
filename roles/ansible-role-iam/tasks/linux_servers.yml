@@ -2,15 +2,16 @@
 # tasks file for ansible-role-iam
 # for Linux servers 
 
-- name: Useradd on Linux server
-  become: true
-  user:
-    name: "{{ iam_username }}"
-    comment: "{{ iam_gecos }}"
-    uid: "{{ iam_uid }}"
-    group: "{{ iam_primary_g }}"
-    groups: "{{ iam_supplementary_g }}"
-    state: present
+- block:
+  - name: Useradd on Linux server
+    become: true
+    user:
+      name: "{{ iam_username }}"
+      comment: "{{ iam_gecos }}"
+      uid: "{{ iam_uid }}"
+      group: "{{ iam_primary_g }}"
+      groups: "{{ iam_supplementary_g }}"
+      state: present
   tags:
     - iam_add_user
 
