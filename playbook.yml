@@ -1,5 +1,7 @@
 - name: Playbook
   hosts: all
   tasks:
-  - import_role:
+  - include_role:
       name: ansible-role-iam
+    tags:
+      - always
