@@ -7,7 +7,7 @@
   - name: Precheck for the user account
     become: true
     getent: 
-      datbase: passwd
+      database: passwd
       key: "{{ iam_username }}"
       fail_key: false
 
