@@ -11,7 +11,7 @@
       key: "{{ iam_username }}"
       fail_key: true
     ignore_errors: true
-    resigter: precheck
+    register: precheck
 
   - name: Debug result
     debug:
