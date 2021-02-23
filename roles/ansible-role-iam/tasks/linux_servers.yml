@@ -1,6 +1,16 @@
 ---
 # tasks file for ansible-role-iam
 # for Linux servers 
+- name: Precheck for the user account
+  become: true
+  getent: 
+    datbase: passwd
+    key: "{{ iam_username }}"
+    fail_key: false
+
+- name: Debug result
+  debug:
+    var: getent_passwd
 
 - block:
   - name: Useradd on Linux server
