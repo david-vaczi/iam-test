@@ -15,10 +15,14 @@
     debug:
       var: getent_passwd
 
-  - name: Expection, user creation aborted
+  - name: Set prechek_user value
+    set_fact:
+      precheck_user: "getent_passwd.{{ iam_username }}"
+
+  - name: User already exists
     fail:
       msg: "{{ iam_username }} already exsist!"
-    when: '"getent_passwd.{{ iam_username}}" is defined'
+    when: precheck_user is not null
 
   - name: Useradd on Linux server
     become: true
@@ -29,7 +33,7 @@
       group: "{{ iam_primary_g }}"
       groups: "{{ iam_supplementary_g }}"
       state: present
-    when: '"getent_passwd.{{ iam_username}}" is undefined'
+    when: precheck_user is null
 
   tags:
     - iam-add-user
