@@ -23,8 +23,8 @@
       name: "{{ iam_username }}"
       comment: "{{ iam_gecos }}"
       uid: "{{ iam_uid }}"
-      group: "{{ iam_primary_g }}"
-      groups: "{{ iam_supplementary_g }}"
+      group: "{{ iam_primary_g | mandatory }}"
+      groups: "{{ iam_supplementary_g | mandatory }}"
       state: present
     when: getent_passwd is undefined
     register: useradd
