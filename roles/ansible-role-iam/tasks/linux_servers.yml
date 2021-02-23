@@ -22,7 +22,7 @@
   - name: User already exists
     fail:
       msg: "{{ iam_username }} already exsist!"
-    when: precheck_user is not null
+    when: '"precheck_user" is not "null"'
 
   - name: Useradd on Linux server
     become: true
@@ -33,7 +33,7 @@
       group: "{{ iam_primary_g }}"
       groups: "{{ iam_supplementary_g }}"
       state: present
-    when: precheck_user is null
+    when: '"precheck_user" is "null"'
 
   tags:
     - iam-add-user
