@@ -10,7 +10,7 @@
       database: passwd
       key: "{{ iam_username }}"
       fail_key: true
-    ignore_erros: true
+    ignore_errors: true
     resigter: precheck
 
   - name: Debug result
