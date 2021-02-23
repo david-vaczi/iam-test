@@ -33,8 +33,7 @@
   - name: UID is not unique
     fail:
       msg: UID in not unique!
-    when: useradd.rc = 4
-
+    when: useradd.rc == 4
 
   tags:
     - iam-add-user
