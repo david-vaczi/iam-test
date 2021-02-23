@@ -11,11 +11,6 @@
       key: "{{ iam_username }}"
       fail_key: true
     ignore_errors: true
-    register: precheck
-
-  - name: Debug result
-    debug:
-      var: getent_passwd
 
   - name: User already exists
     fail:
