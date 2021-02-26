@@ -40,6 +40,11 @@
       msg: User creation failed!
     when: useradd.rc != 0
 
+  - name: Defined group doesn't exist!
+    fail:
+      msg: At least one of the groups defines does not exist!
+    when: useradd.rc == 6
+
   tags:
     - iam-add-user
 
