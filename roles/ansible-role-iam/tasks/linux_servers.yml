@@ -4,7 +4,7 @@
 
 - block:
 
-  - name: Precheck for the user account
+  - name: Pre-check for the username
     become: true
     getent: 
       database: passwd
@@ -14,7 +14,7 @@
 
   - name: User already exists
     fail:
-      msg: "{{ iam_username }} already exsist!"
+      msg: "{{ iam_username }} already exists!"
     when: getent_passwd is defined
 
   - name: Useradd on Linux server
@@ -22,7 +22,7 @@
     user:
       name: "{{ iam_username }}"
       comment: "{{ iam_gecos }}"
-      uid: "{{ iam_uid }}"
+      uid: "{{ iam_uid | default(omit) }}"
       group: "{{ iam_primary_g | mandatory }}"
       groups: "{{ iam_supplementary_g | mandatory }}"
       state: present
@@ -37,13 +37,14 @@
  
   - name: UID is not unique
     fail:
-      msg: User creation failed
+      msg: User creation failed!
     when: useradd.rc != 0
 
   tags:
     - iam-add-user
 
 - name: Userdel on Linux server
+  become: true
   user:
     name: "{{ iam_username }}"
     remove: yes
@@ -52,6 +53,7 @@
     - remove_user
 
 - block:
+  become: true
   - name: Unlock user account
     shell: "passwd -u {{ iam_username }}"
 
