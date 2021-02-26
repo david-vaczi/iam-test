@@ -46,7 +46,7 @@
     when: useradd.rc == 6
 
   tags:
-    - iam-add-user
+    - add_user
 
 - name: Userdel on Linux server
   become: true
